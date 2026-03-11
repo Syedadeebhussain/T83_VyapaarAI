@@ -1,14 +1,3 @@
-"""
-FASTAPI ROUTES
-==============
-
-Defines API endpoints for the chatbot:
-- POST /chat - Process user message
-- GET /health - Health check
-- GET /intents - List available intents
-- POST /train - Retrain classifier
-"""
-
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional, List

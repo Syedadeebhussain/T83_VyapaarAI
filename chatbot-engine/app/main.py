@@ -1,16 +1,4 @@
-"""
-MAIN CHATBOT ENGINE
-===================
 
-Orchestrates all chatbot services:
-1. Language detection
-2. Translation
-3. Intent classification
-4. Entity extraction
-5. Response generation
-
-Single point of entry for chatbot operations.
-"""
 
 from services.language import LanguageDetector
 from services.translation import TranslationService

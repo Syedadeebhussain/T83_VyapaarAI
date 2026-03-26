@@ -4,3 +4,6 @@ await fetch("http://localhost:5000/api/orders/place",{
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify(orderData)
 });
+
+const res=await fetch(`/api/orders/${orderId}`);
+const data=await res.json();

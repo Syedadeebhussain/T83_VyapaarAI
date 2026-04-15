@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Razorpay Full Flow</title>
+</head>
+
+<body>
+
+<h2>Razorpay Payment</h2>
+
+<button onclick="payNow()">Pay ₹100</button>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+async function payNow(){
+
+// Step 1: create order from backend
+const res = await fetch("http://localhost:5000/create-order", {
+method: "POST"
+});
+
+const order = await res.json();
+
+// Step 2: open razorpay
+var options = {
+    key: "rzp_test_SdFGfWICW2alZ9",
+    order_id: order.id,
+    amount:order.amount,
+    currency:"INR",
+    name: "Test Payment",
+    description: "Payment Demo",
+
+    handler: async function (response){
+
+        console.log("Payment success:", response);
+        // Step 3: send to backend for verification
+        const verify = await fetch("http://localhost:5000/verify-payment", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(response)
+        });
+
+        const result = await verify.json();
+
+        if(result.status === "success"){
+            alert("Payment saved in DB");
+        } else {
+            alert("Payment verification failed");
+        }
+
+    },
+
+    prefill: {
+        name: "Test User",
+        email: "test@test.com",
+        contact: "9999999999"
+    },
+
+    theme: {
+        color: "#3399cc"
+    }
+};
+
+var rzp = new Razorpay(options);
+rzp.open();
+
+}
+</script>
+
+</body>
+</html>
